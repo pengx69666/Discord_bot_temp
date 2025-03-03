@@ -1,2 +1,2 @@
-# Discord_bot_temp
+# Discord bot template
 A discord bot template 
