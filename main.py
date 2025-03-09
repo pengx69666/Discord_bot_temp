@@ -8,7 +8,8 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
-DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN") # You would have to create a .env file with your discord token
+                                           # For example: DISCORD_TOKEN=<token>
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -17,16 +18,13 @@ intents.guilds = True
 intents.members = True
 intents.moderation = True
 
-bot = commands.Bot(command_prefix="`", intents=intents, help_command=None)
+bot = commands.Bot(command_prefix="!", intents=intents, help_command=None)
 
 
 @bot.event
 async def on_ready():
     await bot.load_extension("cogs.commands")
     await bot.load_extension("cogs.moderation")
-    # await bot.load_extension("cogs.automod")
-    # await bot.load_extension("cogs.currency")
-    # There is no automod and economy yet
     await bot.tree.sync()
     print(f"Logged in as {bot.user}")
     print("Loaded extensions")
@@ -46,7 +44,7 @@ async def on_command_error(ctx, error):
         await ctx.send(embed=embed)
 
     elif isinstance(error, commands.CommandInvokeError):
-        embed = discord.Embed(title="Error, command invoke error", description=f"Error: {error}\n If error says 403 missing permissions, please check bot permissions or move bot role to the top of the list.\nIf the error still persists, contact devs.",
+        embed = discord.Embed(title="Error, command invoke error", description=f"Error: {error}",
                               colour=discord.Colour.red())
         await ctx.send(embed=embed)
 
@@ -72,17 +70,17 @@ async def commands_help(ctx):
     embed = discord.Embed(title="Commands Help", description="Commands for the bot", color=discord.Colour.green())
     embed.add_field(name="Commands",
                     value="""
-                    *`help* - Shows this message
-                    *`user <user>* - Shows info about a user
+                    *!help* - Shows this message
+                    *!user <user>* - Shows info about a user
                     """)
     embed.add_field(name="Moderation Commands",
                     value="""
                     *Requires administrator perms*
-                    *`warn <user> <reason>* - Warns a user from the server
-                    *`ban <user> <delete_message_days> <reason>* - Bans a user
-                    *`kick <user> <reason>* - Kicks a user
-                    *`timeout <user> <duration_days> <hours> <minutes> <reason>* - Timeout user(in development - DO NOT USE)
-                    *`remove_timeout <user>* - Removes a timeout from a user""")
+                    *!warn <user> <reason>* - Warns a user from the server
+                    *!ban <user> <delete_message_days> <reason>* - Bans a user
+                    *!kick <user> <reason>* - Kicks a user
+                    *!timeout <user> <duration_days> <hours> <minutes> <reason>* - Timeout user(in development - DO NOT USE)
+                    *!remove_timeout <user>* - Removes a timeout from a user""")
     await ctx.send(embed=embed)
 
 
